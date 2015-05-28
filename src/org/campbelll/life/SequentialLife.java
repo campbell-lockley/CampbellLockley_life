@@ -89,11 +89,15 @@ public class SequentialLife implements Life {
 	 */
 	private char live(int index, int[] neighbours) {
 		int sum = 0;
+//		char sum = 0;
+		
+		/* It its just as fast to use a loop as to unroll it */
+		/* It is faster to test-branch-increment than to += the chars */
 		
 		/* Sum living neighbours, including itself */
-		/* It its just as fast to use a loop as to unroll it */
 		for (int i = 0; i < NEIGH_NUM; i++) {
 			if (board[index + neighbours[i]] == ALIVE) sum++;
+//			sum += board[index + neighbours[i]];
 		}
 		
 		/* Apply shortened rules */
@@ -205,7 +209,8 @@ public class SequentialLife implements Life {
 		/* Print board to stdout */
 		for (int y = 1; y < (height + 1); y++) {
 			for (int x = 1; x < (width + 1); x++) {
-				System.out.print(board[y * (boardDim + 2) + x]);
+				System.out.print(
+						(board[y * (boardDim + 2) + x] == ALIVE) ? "#" : " ");
 			}
 			System.out.println();
 		}

@@ -20,8 +20,10 @@ import java.io.InputStream;
 public interface Life {
 	/** Char representation of a "living" cell. */
 	public static final char ALIVE = '#';
+//	public static final char ALIVE = 1;
 	/** Char representation of a "dead" cell. */
 	public static final char DEAD = ' ';
+//	public static final char DEAD = 0;
 	
 	/**
 	 * Calculates the next generation in the game of life.
