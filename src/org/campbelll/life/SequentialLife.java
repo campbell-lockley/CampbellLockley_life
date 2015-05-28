@@ -33,9 +33,9 @@ public class SequentialLife implements Life {
 	
 	/* Private Globals */
 	private int boardDim;		// Dimension size of the board
-//	private boolean[] board;	// Representation of the Game of Life board
-//	private boolean[] nextGen;	// Next generation of the Game of Life
-	private char[] board, nextGen;
+	/* Java handles chars much faster than booleans and ints */
+	private char[] board;		// Representation of the Game of Life board
+	private char[] nextGen;		// Next generation of the Game of Life
 	private int[][] neighbours;	// Indexes of neighbours (incl. self) in board
 	
 	/**
@@ -45,8 +45,6 @@ public class SequentialLife implements Life {
 	 */
 	public SequentialLife(int boardDim) {
 		this.boardDim = boardDim;
-//		this.board = new boolean[boardDim * boardDim];
-//		this.nextGen = new boolean[boardDim * boardDim];
 		this.board = new char[boardDim * boardDim];
 		this.nextGen = new char[boardDim * boardDim];
 		this.neighbours = new int[NEIGH_NUM][NEIGH_NUM];
@@ -91,8 +89,8 @@ public class SequentialLife implements Life {
 	}
 	
 	/**
-	 * Runs the {@link SequentialLife#age() age()} method the specified number of 
-	 * times to give the JIT compiler opportunity to run.
+	 * Runs the {@link SequentialLife#age() age()} method the specified number 
+	 * of times to give the JIT compiler opportunity to run.
 	 * 
 	 * @param times Number of warmup iterations.
 	 */
@@ -131,6 +129,7 @@ public class SequentialLife implements Life {
 		int sum = 0;
 		
 		/* Sum living neighbours, including itself */
+		/* It its just as fast to use a loop as to unroll it */
 		for (int i = 0; i < NEIGH_NUM; i++) {
 			if (board[index + neighbours[i]] == ALIVE) sum++;
 		}
@@ -231,7 +230,7 @@ public class SequentialLife implements Life {
 				x++;
 			}
 		} catch (IndexOutOfBoundsException e) {
-			Arrays.fill(board, DEAD);	// Clear board values
+			Arrays.fill(board, DEAD);		// Clear board values
 			throw new FileFormatException(
 					"Input pattern is larger than board size");
 		} finally {
@@ -251,7 +250,6 @@ public class SequentialLife implements Life {
 		/* Print board to stdout */
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-//				System.out.print((board[y * boardDim + x] ? ALIVE : DEAD));
 				System.out.print(board[y * boardDim + x]);
 			}
 			System.out.println();
