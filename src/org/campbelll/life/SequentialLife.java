@@ -21,22 +21,13 @@ import java.util.Arrays;
 public class SequentialLife implements Life {
 	/* Constants */
 	private static final int NEIGH_NUM = 9;	// Number of neighbours (incl. self)
-	private static final int NO_WRAP = 0;	// Indexes to neighbour arrays 
-	private static final int WRAP_LEFT = 1;
-	private static final int WRAP_RIGHT = 2;
-	private static final int WRAP_UP = 3;
-	private static final int WRAP_DOWN = 4;
-	private static final int WRAP_UP_LEFT = 5;
-	private static final int WRAP_UP_RIGHT = 6;
-	private static final int WRAP_DOWN_LEFT = 7;
-	private static final int WRAP_DOWN_RIGHT = 8;
 	
 	/* Private Globals */
 	private int boardDim;		// Dimension size of the board
 	/* Java handles chars much faster than booleans and ints */
 	private char[] board;		// Representation of the Game of Life board
 	private char[] nextGen;		// Next generation of the Game of Life
-	private int[][] neighbours;	// Indexes of neighbours (incl. self) in board
+	private int[] neighbours;	// Indexes of neighbours (incl. self) in board
 	
 	/**
 	 * Constructor.
@@ -47,44 +38,15 @@ public class SequentialLife implements Life {
 		this.boardDim = boardDim;
 		this.board = new char[(boardDim + 2) * (boardDim + 2)];
 		this.nextGen = new char[(boardDim + 2) * (boardDim + 2)];
-		this.neighbours = new int[NEIGH_NUM][NEIGH_NUM];
+		this.neighbours = new int[NEIGH_NUM];
 		
 		/* Calculate neighbour index arrays */
 		int index = 0;
 		for (int y = -1; y <= 1; y++) {
 			for (int x = -1; x <= 1; x++) {
-				neighbours[NO_WRAP][index++] = y * boardDim + x;
+				neighbours[index++] = y * (boardDim + 2) + x;
 			}
 		}
-//		neighbours[WRAP_LEFT] = Arrays.copyOf(neighbours[NO_WRAP], NEIGH_NUM);
-//		for (int i = 0; i < 9; i += 3) neighbours[WRAP_LEFT][i] += boardDim;
-//		neighbours[WRAP_RIGHT] = Arrays.copyOf(neighbours[NO_WRAP], NEIGH_NUM);
-//		for (int i = 2; i < 9; i += 3) neighbours[WRAP_RIGHT][i] -= boardDim;
-//		int boardSqr = boardDim * boardDim;
-//		neighbours[WRAP_UP] = Arrays.copyOf(neighbours[NO_WRAP], NEIGH_NUM);
-//		for (int i = 0; i < 3; i++) neighbours[WRAP_UP][i] += boardSqr;
-//		neighbours[WRAP_DOWN] = Arrays.copyOf(neighbours[NO_WRAP], NEIGH_NUM);
-//		for (int i = 6; i < 9; i++) neighbours[WRAP_DOWN][i] -= boardSqr;
-//		neighbours[WRAP_UP_LEFT] = 
-//				Arrays.copyOf(neighbours[WRAP_LEFT], NEIGH_NUM);
-//		for (int i = 0; i < 3; i++) {
-//			neighbours[WRAP_UP_LEFT][i] += neighbours[WRAP_UP][i];
-//		}
-//		neighbours[WRAP_UP_RIGHT] = 
-//				Arrays.copyOf(neighbours[WRAP_RIGHT], NEIGH_NUM);
-//		for (int i = 0; i < 3; i++) {
-//			neighbours[WRAP_UP_RIGHT][i] += neighbours[WRAP_UP][i];
-//		}
-//		neighbours[WRAP_DOWN_LEFT] = 
-//				Arrays.copyOf(neighbours[WRAP_LEFT], NEIGH_NUM);
-//		for (int i = 6; i < 9; i++) {
-//			neighbours[WRAP_DOWN_LEFT][i] += neighbours[WRAP_DOWN][i];
-//		}
-//		neighbours[WRAP_DOWN_RIGHT] = 
-//				Arrays.copyOf(neighbours[WRAP_RIGHT], NEIGH_NUM);
-//		for (int i = 6; i < 9; i++) {
-//			neighbours[WRAP_DOWN_RIGHT][i] += neighbours[WRAP_DOWN][i];
-//		}
 		
 	}
 	
@@ -147,20 +109,12 @@ public class SequentialLife implements Life {
 		for (int y = 1; y < (boardDim + 1); y++) {
 			for (int x = 1; x < (boardDim + 1); x++) {
 				index = y * (boardDim + 2) + x;
-				nextGen[index] = live(index, neighbours[NO_WRAP]);
+				nextGen[index] = live(index, neighbours);
 			}
 		}
 		
-		/* Copy last row to top and first row to bottom */
-		for (int x = 0; x < boardDim + 2; x++) {
-			board[x] = board[boardDim*(boardDim+2)+x];
-			board[(boardDim+1)*(boardDim+2)+x] = board[(boardDim+2)+x];
-		}
-		/* Copy right most column to left and left most column to right */
-		for (int y = 0; y < boardDim + 2; y++) {
-			board[y*(boardDim+2)] = board[y*(boardDim+2)+boardDim+1];
-			board[y*(boardDim+2)+boardDim+1] = board[y*(boardDim+2)];
-		}
+		/* Copy edges to handle wrapping */
+		copyEdges(nextGen);
 		
 		/* Swap boards over */
 		char[] tmp = board;
@@ -168,59 +122,30 @@ public class SequentialLife implements Life {
 		nextGen = tmp;
 	}
 	
-//	@Override
-//	public void age() {
-//		/* Iterate over board */
-//		int index;
-//		
-//		/* Do Top Left cell */
-//		nextGen[0] = live(0, neighbours[WRAP_UP_LEFT]);
-//		
-//		/* Do Top cells */
-//		for (int x = 1; x < (boardDim - 1); x++) {
-//			nextGen[x] = live(x, neighbours[WRAP_UP]);
-//		}
-//		
-//		/* Do Top Right cell */
-//		index = boardDim - 1;
-//		nextGen[index] = live(index, neighbours[WRAP_UP_RIGHT]);
-//		
-//		/* Do middle cells */
-//		for (int y = 1; y < (boardDim - 1); y++) {
-//			/* Do left most cell */
-//			index = y * boardDim;
-//			nextGen[index] = live(index, neighbours[WRAP_LEFT]);
-//			
-//			/* Do middle cells */
-//			for (int x = 1; x < (boardDim - 1); x++) {
-//				index = y * boardDim + x;
-//				nextGen[index] = live(index, neighbours[NO_WRAP]);
-//			}
-//			
-//			/* Do right most cell */
-//			index = (y + 1) * boardDim - 1;
-//			nextGen[index] = live(index, neighbours[WRAP_RIGHT]);
-//		}
-//		
-//		/* Do Bottom Left cell */
-//		index = (boardDim - 1) * boardDim;
-//		nextGen[index] = live(index, neighbours[WRAP_DOWN_LEFT]);
-//		
-//		/* Do bottom cells */
-//		for (int x = (boardDim - 1) * boardDim + 1; 
-//				x < ((boardDim * boardDim) - 2); x++) {
-//			nextGen[x] = live(x, neighbours[WRAP_DOWN]);
-//		}
-//
-//		/* Do Bottom Right cell */
-//		index = (boardDim * boardDim) - 1;
-//		nextGen[index] = live(index, neighbours[WRAP_DOWN_RIGHT]);
-//		
-//		/* Swap boards over */
-//		char[] tmp = board;
-//		board = nextGen;
-//		nextGen = tmp;
-//	}
+	/**
+	 * Copies edges of board to facilitate wrapping.
+	 * <p>
+	 * Top edge (i.e. the 2nd row) is copied to the bottom of the board, bottom 
+	 * edge (i.e. the (n-1) row) is copied to the top of the board, likewise 
+	 * with the left and right edges. The corners are handled automatically.
+	 * 
+	 * @param board Board to perform edge copies on.
+	 * @return Pointer to edited board.
+	 */
+	private char[] copyEdges(char[] board) {
+		/* Copy last row to top and first row to bottom */
+		for (int x = 0; x < (boardDim + 2); x++) {
+			board[x] = board[boardDim*(boardDim+2)+x];
+			board[(boardDim+1)*(boardDim+2)+x] = board[(boardDim+2)+x];
+		}
+		/* Copy right most column to left and left most column to right */
+		for (int y = 0; y < (boardDim + 2); y++) {
+			board[y*(boardDim+2)] = board[y*(boardDim+2)+boardDim];
+			board[y*(boardDim+2)+boardDim+1] = board[y*(boardDim+2)+1];
+		}
+		
+		return board;
+	}
 
 	@Override
 	public void loadPattern(InputStream in) 
@@ -243,33 +168,22 @@ public class SequentialLife implements Life {
 		
 		/* Populate board from input stream */
 		int x = xStart + 1, y = yStart + 1;
-//		int x = xStart, y = yStart;
 		try {
 			while ((c = br.read()) != -1) {
 				if (c == newline) {			// Next input line
 					y++;
 					x = xStart + 1;
-//					x = xStart;
 					continue;
 				} else if (c == creturn) {	// Ignore carriage returns (\r)
 					continue;
 				} else if (c != space) {	// This is a "living" cell
-//					board[y * (boardDim + 2) + x] = ALIVE;
-					board[y * boardDim + x] = ALIVE;
+					board[y * (boardDim + 2) + x] = ALIVE;
 				}
 				x++;
 			}
 
-			/* Copy last row to top and first row to bottom */
-			for (x = 0; x < boardDim + 2; x++) {
-				board[x] = board[boardDim*(boardDim+2)+x];
-				board[(boardDim+1)*(boardDim+2)+x] = board[(boardDim+2)+x];
-			}
-			/* Copy right most column to left and left most column to right */
-			for (y = 0; y < boardDim + 2; y++) {
-				board[y*(boardDim+2)] = board[y*(boardDim+2)+boardDim+1];
-				board[y*(boardDim+2)+boardDim+1] = board[y*(boardDim+2)+1];
-			}
+			/* Copy edges to handle wrapping */
+			copyEdges(board);
 		} catch (IndexOutOfBoundsException e) {
 			Arrays.fill(board, DEAD);		// Clear board values
 			throw new FileFormatException(
@@ -291,22 +205,20 @@ public class SequentialLife implements Life {
 		/* Print board to stdout */
 		for (int y = 1; y < (height + 1); y++) {
 			for (int x = 1; x < (width + 1); x++) {
-//		for (int y = 0; y < height; y++) {
-//			for (int x = 0; x < width; x++) {
-				System.out.print(board[y * boardDim + x]);
+				System.out.print(board[y * (boardDim + 2) + x]);
 			}
 			System.out.println();
 		}
 		System.out.flush();;
 	}
 	
-	/**
-	 * Returns the dimension size of the Game of Life board.
-	 * 
-	 * @return Size of board dimension.
-	 */
-	public int getDimSize() {
-		return this.boardDim;
-	}
+//	/**
+//	 * Returns the dimension size of the Game of Life board.
+//	 * 
+//	 * @return Size of board dimension.
+//	 */
+//	public int getDimSize() {
+//		return this.boardDim;
+//	}
 
 }

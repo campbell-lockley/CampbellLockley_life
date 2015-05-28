@@ -23,8 +23,10 @@ public class Main {
 	 */
 	public static void main(String[] args) 
 			throws IOException, FileFormatException {
+//		marku_life.SequentialLife life = new marku_life.SequentialLife(BOARD_SIZE);
 		SequentialLife life = new SequentialLife(BOARD_SIZE);
-		InputStream input = Main.class.getResourceAsStream("/gosperGliderGun.patt");
+		InputStream input = Main.class
+				.getResourceAsStream("/gosperGliderGun.patt");
 		life.loadPattern(input);
 		
 		System.out.print("Warming up ...");
@@ -38,7 +40,8 @@ public class Main {
 			life.age();
 		}
 		final long endTime = System.nanoTime();
-		System.out.println("Time taken was " + (endTime - startTime) / 1.0e9 + " secs");
+		System.out.println("Time taken was " + (endTime - startTime) / 1.0e9 + 
+				" secs");
 		life.printBoard(40, 40);
 	}
 }
