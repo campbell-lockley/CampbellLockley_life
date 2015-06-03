@@ -2,6 +2,7 @@ package org.campbelll.life;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Main program for running the Game-of-Life jar.
@@ -25,24 +26,36 @@ public class Main {
 	public static void main(String[] args) 
 			throws IOException, FileFormatException {
 //		marku_life.SequentialLife life = new marku_life.SequentialLife(BOARD_SIZE);
-		SequentialLife life = new SequentialLife(BOARD_SIZE);
+//		Life life = new SequentialLife(BOARD_SIZE);
+		Life life = new LineParallelLife(BOARD_SIZE);
 		InputStream input = Main.class
 				.getResourceAsStream("/gosperGliderGun.patt");
 		life.loadPattern(input);
 		
 		System.out.print("Warming up ...");
-		life.warmup(100);
+		try {
+			life.warmup(100);
+		} catch (TimeoutException e) {
+			System.err.println("warmup() timed out");
+			e.printStackTrace();
+		}
 		System.out.println(" Done");
 		
 		System.out.println("Starting " + GENERATIONS + " generations of "
 				+ BOARD_SIZE + "x" + BOARD_SIZE);
 		final long startTime = System.nanoTime();
 		for (int gen = 0; gen < GENERATIONS; gen++) {
-			life.age();
+			try {
+				life.age();
+			} catch (TimeoutException e) {
+				System.err.println("age() timed out");
+				e.printStackTrace();
+			}
 		}
 		final long endTime = System.nanoTime();
 		System.out.println("Time taken was " + (endTime - startTime) / 1.0e9 + 
 				" secs");
 		life.printBoard(40, 40);
 	}
+	
 }

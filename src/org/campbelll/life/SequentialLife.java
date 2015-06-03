@@ -7,12 +7,12 @@
 package org.campbelll.life;
 
 /**
- * Sequential implementation of 
- * {@link org.campbelll.life.Life Life}.
+ * Sequential implementation of {@link Life}.
  * 
  * @author Campbell Lockley
  */
 public class SequentialLife extends Life {
+	
 	/**
 	 * Constructor.
 	 * 
@@ -47,4 +47,5 @@ public class SequentialLife extends Life {
 		board = nextGen;
 		nextGen = tmp;
 	}
+	
 }

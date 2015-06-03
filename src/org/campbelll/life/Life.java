@@ -2,7 +2,7 @@
  * Name:		Life.java
  * Description:	Interface for game of life implementations.
  * Author:		Campbell Lockley		StudentID: 1178618
- * DateL		26/05/15
+ * Date:		26/05/15
  */
 package org.campbelll.life;
 
@@ -11,10 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.concurrent.TimeoutException;
 
 /**
- * Interface for Conway's Game of Life implementations in 
- * {@link org.campbelll.life org.campbelll.life}.
+ * Abstract class representing Conway's Game of Life implementations in 
+ * {@link org.campbelll.life}.
  * <p>
  * Rules for Conway's Game of life can be found 
  * <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">here</a>.
@@ -32,7 +33,7 @@ public abstract class Life {
 	protected char[] board;				// Game of Life board
 	protected char[] nextGen;			// Next generation of the Game of Life
 	protected int boardDim;				// Dimension size of the board
-	protected final int[] neighbours;	// Indexes of neighbours (incl. self)
+	protected int[] neighbours;			// Indexes of neighbours (incl. self)
 	
 	/**
 	 * Constructor.
@@ -57,18 +58,26 @@ public abstract class Life {
 		}
 	}
 	
+	/** Default constructor. */
+	protected Life() {
+	}
+	
 	/**
 	 * Calculates the next generation in the Game of Life.
+	 * 
+	 * @throws TimeoutException if a blocking method call in age() times out, 
+	 * causing age() to fail.
 	 */
-	public abstract void age();
+	public abstract void age() throws TimeoutException;
 	
 	/**
 	 * Runs the {@link SequentialLife#age() age()} method the specified number 
 	 * of times to give the JIT compiler opportunity to do some optimisation.
 	 * 
 	 * @param times Number of warmup iterations. 100 times works well.
+	 * @throws TimeoutException if age() times out.
 	 */
-	public void warmup(int times) {
+	public void warmup(int times) throws TimeoutException {
 		char[] tmp = Arrays.copyOf(board, board.length);
 		
 		for (int i = 0; i < times; i++) age();
@@ -246,4 +255,5 @@ public abstract class Life {
 		
 		return board;
 	}
+	
 }

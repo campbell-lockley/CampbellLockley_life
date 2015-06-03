@@ -1,6 +1,6 @@
 /*
- * Name:		SequentialLifeTest.java
- * Description:	Test cases for SequentialLife.java
+ * Name:		ParallelLifeTest.java
+ * Description:	Test cases for ParallelLife.java
  * Author:		Campbell Lockley		StudentID: 1178618
  * Date:		03/06/15
  */
@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeoutException;
 
 import org.junit.Test;
 
@@ -17,69 +18,71 @@ import static org.campbelll.life.Life.ALIVE;
 import static org.campbelll.life.Life.DEAD;;
 
 /**
- * Test cases for {@link SequentialLife}.
+ * Test cases for {@link LineParallelLife}.
  * 
  * @author Campbell Lockley
  */
-public class SequentialLifeTest {
+public class ParallelLifeTest {
 
 	/**
-	 * Tests {@link SequentialLife#loadPattern(InputStream)}.
+	 * Tests {@link LineParallelLife#call()}.
 	 * <p>
-	 * {@link SequentialLife#loadPattern(InputStream) loadPattern} is tested 
-	 * using the small pattern file squareTest.patt.
+	 * {@link LineParallelLife#call() call()} computes the next generation for a 
+	 * single line of the board.
 	 * 
 	 * @throws FileFormatException if pattern file is incorrectly formatted.
 	 * @throws IOException if there is an I/O error.
 	 */
 	@Test
-	public void testLoadPattern() throws IOException, FileFormatException {
-		final String msg = "loadPattern() did not load correctly";
-		final char[] board = 
-			{
-				DEAD,	DEAD,	DEAD,	DEAD,	DEAD,	DEAD,	DEAD,
-				DEAD,	DEAD,	DEAD,	DEAD,	DEAD,	DEAD,	DEAD,
-				DEAD,	DEAD,	ALIVE,	ALIVE,	ALIVE,	DEAD,	DEAD,
-				DEAD,	DEAD,	ALIVE,	DEAD,	ALIVE,	DEAD,	DEAD,
-				DEAD,	DEAD,	ALIVE,	ALIVE,	ALIVE,	DEAD,	DEAD,
-				DEAD,	DEAD,	DEAD,	DEAD,	DEAD,	DEAD,	DEAD,
-				DEAD,	DEAD,	DEAD,	DEAD,	DEAD,	DEAD,	DEAD,
-			};
+	public void testCall() throws IOException, FileFormatException {
+		final String msg = "call() didn't compute correctly";
 		
 		/* Instantiate class under test */
-		final int boardSize = 5;
-		SequentialLife life = new SequentialLife(boardSize);
+		final int boardDim = 5;
+		LineParallelLife life = new LineParallelLife(boardDim);
 		
 		/*
-		 * Load test pattern - squareTest.patt:
-		 * 	1:1 1
+		 * Load test pattern - blinker.patt:
+		 * 	1:1 2
 		 * 	2:###
-		 * 	3:# #
-		 * 	4:###
 		 */
-		InputStream in = SequentialLifeTest.class
-				.getResourceAsStream("/squareTest.patt");
-		
-		/* Run method under test */
+		InputStream in = ParallelLifeTest.class
+				.getResourceAsStream("/blinker.patt");
 		life.loadPattern(in);
-		
-		/* Test state of board including wrapped edges */
-		for (int i = 0; i < 49; i++) {
-			assertArrayEquals(msg, board, life.board);
-		}
+
+		/* Setup args for run() */
+		final char[] nextGen = new char[life.board.length];
+		final char[] expected = 
+			{
+				0,		0,		0,		0,		0,		0,		0,
+				0,		0,		0,		0,		0,		0,		0,
+				0,		0,		0,		0,		0,		0,		0,
+				0,		DEAD,	DEAD,	ALIVE,	DEAD,	DEAD,	0,
+				0,		0,		0,		0,		0,		0,		0,
+				0,		0,		0,		0,		0,		0,		0,
+				0,		0,		0,		0,		0,		0,		0,
+			};
+		final int line = 2;
+		LineParallelLife job = new LineParallelLife(life.board, nextGen, 
+				life.neighbours, boardDim, line);
+
+		/* Run method under test and test result */
+		job.call();
+		assertArrayEquals(msg, expected, nextGen);
 	}
 
 	/**
-	 * Tests {@link SequentialLife#age()}.
+	 * Tests {@link LineParallelLife#age()}.
 	 * <p>
-	 * {@link SequentialLife#age() age} is tested using the small pattern file 
+	 * {@link LineParallelLife#age() age} is tested using the small pattern file 
 	 * blinker.patt which is a period 2 oscillator.
 	 * 
+	 * @throws TimeoutException if {@link LineParallelLife#age() age()} times out.
 	 * @throws FileFormatException if pattern file is incorrectly formatted.
 	 * @throws IOException if there is an I/O error.
 	 */
 	@Test
-	public void testAge() throws IOException, FileFormatException {
+	public void testAge() throws TimeoutException, IOException, FileFormatException {
 		final String msg = "age() didn't compute next generation correctly";
 		final char[] nextGen1 = 
 			{
@@ -104,14 +107,14 @@ public class SequentialLifeTest {
 		
 		/* Instantiate class under test */
 		int boardSize = 5;
-		SequentialLife life = new SequentialLife(boardSize);
+		LineParallelLife life = new LineParallelLife(boardSize);
 		
 		/*
 		 * Load test pattern - blinker.patt:
 		 * 	1:1 2
 		 * 	2:###
 		 */
-		InputStream in = SequentialLifeTest.class
+		InputStream in = ParallelLifeTest.class
 				.getResourceAsStream("/blinker.patt");
 		life.loadPattern(in);
 		
@@ -133,16 +136,18 @@ public class SequentialLifeTest {
 	}
 
 	/**
-	 * Tests the copy-edge wrapping of {@link SequentialLife}.
+	 * Tests the copy-edge wrapping of {@link LineParallelLife}.
 	 * <p>
 	 * Wrapping is tested with the small pattern file toadWrap.patt which 
 	 * behaves as a period 2 oscillator on a 5x5 board.
 	 * 
 	 * @throws FileFormatException if pattern file is incorrectly formatted.
 	 * @throws IOException if there is an I/O error.
+	 * @throws TimeoutException if {@link LineParallelLife#age() age()} times out.
 	 */
 	@Test
-	public void testWrap() throws IOException, FileFormatException {
+	public void testWrap() 
+			throws IOException, FileFormatException, TimeoutException {
 		final String msg = "board is not wrapping correctly";
 		final char[] nextGen = 
 			{
@@ -157,7 +162,7 @@ public class SequentialLifeTest {
 		
 		/* Instantiate class under test */
 		final int boardDim = 5;
-		SequentialLife life = new SequentialLife(boardDim);
+		LineParallelLife life = new LineParallelLife(boardDim);
 		
 		/*
 		 * Load test pattern - toadWrap.patt:
@@ -168,7 +173,7 @@ public class SequentialLifeTest {
 		 * 	5:
 		 * 	6: ###
 		 */
-		InputStream in = SequentialLifeTest.class
+		InputStream in = ParallelLifeTest.class
 				.getResourceAsStream("/toadWrap.patt");
 		life.loadPattern(in);
 		
