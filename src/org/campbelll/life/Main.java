@@ -3,23 +3,24 @@ package org.campbelll.life;
 import java.io.IOException;
 import java.io.InputStream;
 
-//import marku_life.SequentialLife;
-
 /**
- * Example main program for running the sequential Game-of-Life.
+ * Main program for running the Game-of-Life jar.
+ * <p>
+ * Copied from life.Main by Mark Utting
  *
- * @author Mark.Utting
- *
+ * @author Campbell Lockley
  */
 public class Main {
-
+	/* Run parameters */
 	final static int GENERATIONS = 4080;
 	final static int BOARD_SIZE = 1024;
 
 	/**
-	 * @param args
-	 * @throws IOException 
-	 * @throws FileFormatException 
+	 * Entry point when running the jar.
+	 * 
+	 * @param args Command line arguments.
+	 * @throws IOException if there is an I/O error.
+	 * @throws FileFormatException if the pattern file is formated incorrectly.
 	 */
 	public static void main(String[] args) 
 			throws IOException, FileFormatException {
