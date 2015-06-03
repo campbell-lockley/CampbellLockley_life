@@ -20,10 +20,8 @@ import java.io.InputStream;
 public interface Life {
 	/** Char representation of a "living" cell. */
 	public static final char ALIVE = '#';
-//	public static final char ALIVE = 1;
 	/** Char representation of a "dead" cell. */
 	public static final char DEAD = ' ';
-//	public static final char DEAD = 0;
 	
 	/**
 	 * Calculates the next generation in the game of life.
@@ -42,6 +40,7 @@ public interface Life {
 	 * Following that is any number of lines representing the pattern. Space 
 	 * denotes "dead" cells, and any character which is not a space denotes a 
 	 * "live" cell.
+	 * Multiple patterns can be loaded onto the same board using this method.
 	 * 
 	 * @param in Input stream to load starting state from.
 	 */

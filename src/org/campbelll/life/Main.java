@@ -30,7 +30,7 @@ public class Main {
 		life.loadPattern(input);
 		
 		System.out.print("Warming up ...");
-		life.warmup(1000);
+		life.warmup(100);
 		System.out.println(" Done");
 		
 		System.out.println("Starting " + GENERATIONS + " generations of "

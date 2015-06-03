@@ -22,12 +22,14 @@ public class SequentialLife implements Life {
 	/* Constants */
 	private static final int NEIGH_NUM = 9;	// Number of neighbours (incl. self)
 	
-	/* Private Globals */
-	private int boardDim;		// Dimension size of the board
+	/* Package Private Globals */
 	/* Java handles chars much faster than booleans and ints */
-	private char[] board;		// Representation of the Game of Life board
-	private char[] nextGen;		// Next generation of the Game of Life
-	private int[] neighbours;	// Indexes of neighbours (incl. self) in board
+	protected char[] board;			// Representation of the Game of Life board
+	protected char[] nextGen;		// Next generation of the Game of Life
+	
+	/* Private Globals */
+	private int boardDim;			// Dimension size of the board
+	private final int[] neighbours;	// Indexes of neighbours (incl. self)
 	
 	/**
 	 * Constructor.
@@ -36,8 +38,11 @@ public class SequentialLife implements Life {
 	 */
 	public SequentialLife(int boardDim) {
 		this.boardDim = boardDim;
+		/* Edge of board is copy of opposite side of board */
 		this.board = new char[(boardDim + 2) * (boardDim + 2)];
 		this.nextGen = new char[(boardDim + 2) * (boardDim + 2)];
+		Arrays.fill(board, DEAD);
+		Arrays.fill(nextGen, DEAD);
 		this.neighbours = new int[NEIGH_NUM];
 		
 		/* Calculate neighbour index arrays */
@@ -47,7 +52,6 @@ public class SequentialLife implements Life {
 				neighbours[index++] = y * (boardDim + 2) + x;
 			}
 		}
-		
 	}
 	
 	/**
@@ -68,7 +72,7 @@ public class SequentialLife implements Life {
 	 * Calculates whether this cell will live or die in the next generation. 
 	 * Rules are:
 	 * <ul>
-	 * 	<li>A live cell with > 2 living neighbours dies</li>
+	 * 	<li>A live cell with < 2 living neighbours dies</li>
 	 * 	<li>A live cell with 2 or 3 living neighbours lives</li>
 	 * 	<li>A live cell with < 3 living neighbours die</li>
 	 * 	<li>A dead cell with exactly 3 living neighbours lives</li>
@@ -89,7 +93,6 @@ public class SequentialLife implements Life {
 	 */
 	private char live(int index, int[] neighbours) {
 		int sum = 0;
-//		char sum = 0;
 		
 		/* It its just as fast to use a loop as to unroll it */
 		/* It is faster to test-branch-increment than to += the chars */
@@ -97,7 +100,6 @@ public class SequentialLife implements Life {
 		/* Sum living neighbours, including itself */
 		for (int i = 0; i < NEIGH_NUM; i++) {
 			if (board[index + neighbours[i]] == ALIVE) sum++;
-//			sum += board[index + neighbours[i]];
 		}
 		
 		/* Apply shortened rules */
@@ -154,9 +156,10 @@ public class SequentialLife implements Life {
 	@Override
 	public void loadPattern(InputStream in) 
 			throws IOException, FileFormatException {
-		/* Clear current boards */
-		Arrays.fill(board, DEAD);
-		Arrays.fill(nextGen, DEAD);
+		/* Backup old board */
+		char[] tmp = board;
+		board = nextGen;
+		nextGen = tmp;
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		
@@ -189,7 +192,10 @@ public class SequentialLife implements Life {
 			/* Copy edges to handle wrapping */
 			copyEdges(board);
 		} catch (IndexOutOfBoundsException e) {
-			Arrays.fill(board, DEAD);		// Clear board values
+			/* On error restore old board */
+			tmp = board;
+			board = nextGen;
+			nextGen = tmp;
 			throw new FileFormatException(
 					"Input pattern is larger than board size");
 		} finally {
@@ -217,13 +223,15 @@ public class SequentialLife implements Life {
 		System.out.flush();;
 	}
 	
-//	/**
-//	 * Returns the dimension size of the Game of Life board.
-//	 * 
-//	 * @return Size of board dimension.
-//	 */
-//	public int getDimSize() {
-//		return this.boardDim;
-//	}
+	/**
+	 * Clears the Game of Life board.
+	 * <p>
+	 * Call before {@link org.campbelll.life.Life#loadPattern loadPattern()} to
+	 * start the Game of Life with a board containing just the loaded pattern.
+	 */
+	public void clearBoard() {
+		Arrays.fill(board, DEAD);
+		Arrays.fill(nextGen, DEAD);
+	}
 
 }
