@@ -29,7 +29,9 @@ public class Main {
 			throws IOException, FileFormatException {
 //		marku_life.SequentialLife life = new marku_life.SequentialLife(BOARD_SIZE);
 //		Life life = new SequentialLife(BOARD_SIZE);
-		Life life = new LineParallelLife(BOARD_SIZE);
+//		Life life = new LineParallelLife(BOARD_SIZE);
+		Life life = new BlockParallelLife(BOARD_SIZE);
+		
 		InputStream input = Main.class
 				.getResourceAsStream("/gosperGliderGun.patt");
 		life.loadPattern(input);

@@ -1,6 +1,6 @@
 /*
- * Name:		ParallelLifeTest.java
- * Description:	Test cases for ParallelLife.java
+ * Name:		LineParallelLifeTest.java
+ * Description:	Test cases for LineParallelLife.java
  * Author:		Campbell Lockley		StudentID: 1178618
  * Date:		03/06/15
  */
@@ -27,8 +27,8 @@ public class LineParallelLifeTest {
 	/**
 	 * Tests {@link LineParallelLife#call()}.
 	 * <p>
-	 * {@link LineParallelLife#call() call()} computes the next generation for a 
-	 * single line of the board.
+	 * {@link LineParallelLife#call() call()} computes the next generation for 
+	 * a single line of the board.
 	 * 
 	 * @throws FileFormatException if pattern file is incorrectly formatted.
 	 * @throws IOException if there is an I/O error.
@@ -50,7 +50,7 @@ public class LineParallelLifeTest {
 				.getResourceAsStream("/blinker.patt");
 		life.loadPattern(in);
 
-		/* Setup args for run() */
+		/* Setup args for call() */
 		final char[] nextGen = new char[life.board.length];
 		final char[] expected = 
 			{
@@ -77,7 +77,8 @@ public class LineParallelLifeTest {
 	 * {@link LineParallelLife#age() age} is tested using the small pattern file 
 	 * blinker.patt which is a period 2 oscillator.
 	 * 
-	 * @throws TimeoutException if {@link LineParallelLife#age() age()} times out.
+	 * @throws TimeoutException if {@link LineParallelLife#age() age()} times 
+	 * out.
 	 * @throws FileFormatException if pattern file is incorrectly formatted.
 	 * @throws IOException if there is an I/O error.
 	 */

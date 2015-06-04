@@ -42,10 +42,15 @@ public abstract class Life {
 	
 	/**
 	 * Constructor.
+	 * <p>
+	 * The game of life board must be a size which is a power of 2.
 	 * 
 	 * @param boardDim Size of board dimension.
 	 */
 	public Life(int boardDim) {
+		/* Size of board must be a power of 2 */
+		assert (boardDim % 2 == 0);
+		
 		this.boardDim = boardDim;
 		/* Edge of board is copied to opposite side of board for wrapping */
 		this.board = new char[(boardDim + 2) * (boardDim + 2)];
