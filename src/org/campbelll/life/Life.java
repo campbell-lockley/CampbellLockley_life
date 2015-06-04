@@ -19,6 +19,7 @@ import java.util.concurrent.TimeoutException;
  * <p>
  * Rules for Conway's Game of life can be found 
  * <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">here</a>.
+ * 
  * @author Campbell Lockley
  */
 public abstract class Life {

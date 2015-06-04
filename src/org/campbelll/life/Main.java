@@ -14,7 +14,9 @@ import java.util.concurrent.TimeoutException;
 public class Main {
 	/* Run parameters */
 	final static int GENERATIONS = 4080;
+//	final static int GENERATIONS = 40800;
 	final static int BOARD_SIZE = 1024;
+//	final static int BOARD_SIZE = 4096;
 
 	/**
 	 * Entry point when running the jar.
