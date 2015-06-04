@@ -35,6 +35,10 @@ public abstract class Life {
 	protected int boardDim;				// Dimension size of the board
 	protected int[] neighbours;			// Indexes of neighbours (incl. self)
 	
+	/** Default constructor. */
+	protected Life() {
+	}
+	
 	/**
 	 * Constructor.
 	 * 
@@ -58,10 +62,6 @@ public abstract class Life {
 		}
 	}
 	
-	/** Default constructor. */
-	protected Life() {
-	}
-	
 	/**
 	 * Calculates the next generation in the Game of Life.
 	 * 
@@ -69,6 +69,11 @@ public abstract class Life {
 	 * causing age() to fail.
 	 */
 	public abstract void age() throws TimeoutException;
+	
+	/**
+	 * Cleans up after itself.
+	 */
+	public abstract void cleanUp();
 	
 	/**
 	 * Runs the {@link SequentialLife#age() age()} method the specified number 

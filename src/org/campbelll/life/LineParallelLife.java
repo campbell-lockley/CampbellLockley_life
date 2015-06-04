@@ -105,6 +105,15 @@ public class LineParallelLife extends Life implements Callable<Object> {
 	}
 	
 	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Shuts down thread pool and terminates threads. 
+	 */
+	public void cleanUp () {
+		pool.shutdownNow();
+	}
+	
+	/**
 	 * Computes next generation for a line of the board.
 	 * <p> 
 	 * Implementation of call() method in 

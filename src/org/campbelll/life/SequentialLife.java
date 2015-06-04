@@ -48,4 +48,13 @@ public class SequentialLife extends Life {
 		nextGen = tmp;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This version of {@link Life} has nothing to clean up.
+	 */
+	public void cleanUp() {
+		return;
+	}
+	
 }

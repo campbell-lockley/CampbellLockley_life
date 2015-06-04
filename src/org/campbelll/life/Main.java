@@ -56,6 +56,7 @@ public class Main {
 		System.out.println("Time taken was " + (endTime - startTime) / 1.0e9 + 
 				" secs");
 		life.printBoard(40, 40);
+		life.cleanUp();
 	}
 	
 }

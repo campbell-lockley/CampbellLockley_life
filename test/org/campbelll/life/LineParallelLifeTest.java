@@ -22,7 +22,7 @@ import static org.campbelll.life.Life.DEAD;;
  * 
  * @author Campbell Lockley
  */
-public class ParallelLifeTest {
+public class LineParallelLifeTest {
 
 	/**
 	 * Tests {@link LineParallelLife#call()}.
@@ -46,7 +46,7 @@ public class ParallelLifeTest {
 		 * 	1:1 2
 		 * 	2:###
 		 */
-		InputStream in = ParallelLifeTest.class
+		InputStream in = LineParallelLifeTest.class
 				.getResourceAsStream("/blinker.patt");
 		life.loadPattern(in);
 
@@ -114,7 +114,7 @@ public class ParallelLifeTest {
 		 * 	1:1 2
 		 * 	2:###
 		 */
-		InputStream in = ParallelLifeTest.class
+		InputStream in = LineParallelLifeTest.class
 				.getResourceAsStream("/blinker.patt");
 		life.loadPattern(in);
 		
@@ -173,7 +173,7 @@ public class ParallelLifeTest {
 		 * 	5:
 		 * 	6: ###
 		 */
-		InputStream in = ParallelLifeTest.class
+		InputStream in = LineParallelLifeTest.class
 				.getResourceAsStream("/toadWrap.patt");
 		life.loadPattern(in);
 		
