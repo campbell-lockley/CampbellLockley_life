@@ -39,7 +39,8 @@ public class LineParallelLifeTest {
 		
 		/* Instantiate class under test */
 		final int boardDim = 5;
-		LineParallelLife life = new LineParallelLife(boardDim);
+		final int numThreads = Runtime.getRuntime().availableProcessors();
+		LineParallelLife life = new LineParallelLife(boardDim, numThreads);
 		
 		/*
 		 * Load test pattern - blinker.patt:
@@ -107,8 +108,9 @@ public class LineParallelLifeTest {
 			};
 		
 		/* Instantiate class under test */
-		int boardSize = 5;
-		LineParallelLife life = new LineParallelLife(boardSize);
+		final int boardSize = 5;
+		final int numThreads = Runtime.getRuntime().availableProcessors();
+		LineParallelLife life = new LineParallelLife(boardSize, numThreads);
 		
 		/*
 		 * Load test pattern - blinker.patt:
@@ -163,7 +165,8 @@ public class LineParallelLifeTest {
 		
 		/* Instantiate class under test */
 		final int boardDim = 5;
-		LineParallelLife life = new LineParallelLife(boardDim);
+		final int numThreads = Runtime.getRuntime().availableProcessors();
+		LineParallelLife life = new LineParallelLife(boardDim, numThreads);
 		
 		/*
 		 * Load test pattern - toadWrap.patt:

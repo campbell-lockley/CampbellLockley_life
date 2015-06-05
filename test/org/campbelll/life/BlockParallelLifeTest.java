@@ -40,7 +40,8 @@ public class BlockParallelLifeTest {
 		
 		/* Instantiate class under test */
 		final int boardDim = 32;
-		BlockParallelLife life = new BlockParallelLife(boardDim);
+		final int numThreads = Runtime.getRuntime().availableProcessors();
+		BlockParallelLife life = new BlockParallelLife(boardDim, numThreads);
 
 		/*
 		 * Load test pattern - blinker.patt:
@@ -87,7 +88,8 @@ public class BlockParallelLifeTest {
 		
 		/* Instantiate class under test */
 		int boardDim = 64;
-		BlockParallelLife life = new BlockParallelLife(boardDim);
+		final int numThreads = Runtime.getRuntime().availableProcessors();
+		BlockParallelLife life = new BlockParallelLife(boardDim, numThreads);
 		
 		/*
 		 * Load test pattern - blinker.patt:

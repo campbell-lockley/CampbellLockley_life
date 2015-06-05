@@ -56,9 +56,10 @@ public class BlockParallelLife extends ParallelLife {
 	 * at least 32.
 	 * 
 	 * @param boardDim Size of board dimension.
+	 * @param numThreads Number of threads for the thread pool to use.
 	 */
-	public BlockParallelLife(int boardDim) {
-		super(boardDim);
+	public BlockParallelLife(int boardDim, int numThreads) {
+		super(boardDim, numThreads);
 		
 		/* For BlocklParallelLife the board dimensions must be at least 32 */
 		assert (boardDim >= numDivisions);

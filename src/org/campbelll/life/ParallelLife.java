@@ -36,12 +36,12 @@ public abstract class ParallelLife extends Life implements Callable<Object> {
 	 * Constructor.
 	 * 
 	 * @param boardDim Size of board dimension.
+	 * @param numThreads Number of threads for the thread pool to use.
 	 */
-	public ParallelLife(int boardDim) {
+	public ParallelLife(int boardDim, int numThreads) {
 		super(boardDim);
 		
 		/* Use number of CPUs as the number of threads for the thread pool */
-		final int numThreads = Runtime.getRuntime().availableProcessors();
 		this.pool = Executors.newFixedThreadPool(numThreads);
 	}
 	

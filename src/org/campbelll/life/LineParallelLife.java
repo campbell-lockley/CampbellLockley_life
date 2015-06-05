@@ -27,9 +27,10 @@ public class LineParallelLife extends ParallelLife {
 	 * Constructor.
 	 * 
 	 * @param boardDim Size of board dimension.
+	 * @param numThreads Number of threads for the thread pool to use.
 	 */
-	public LineParallelLife(int boardDim) {
-		super(boardDim);
+	public LineParallelLife(int boardDim, int numThreads) {
+		super(boardDim, numThreads);
 	}
 	
 	/**
