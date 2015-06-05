@@ -28,10 +28,13 @@ public class Main {
 	public static void main(String[] args) 
 			throws IOException, FileFormatException {
 		final int numThreads = Runtime.getRuntime().availableProcessors();
-//		marku_life.SequentialLife life = new marku_life.SequentialLife(BOARD_SIZE);
+		final int cacheSize = 32;		// 32k L1 cache for my machine
+//		marku_life.SequentialLife life = 
+//				new marku_life.SequentialLife(BOARD_SIZE);
 //		Life life = new SequentialLife(BOARD_SIZE);
 //		Life life = new LineParallelLife(BOARD_SIZE, numThreads);
 		Life life = new BlockParallelLife(BOARD_SIZE, numThreads);
+//		Life life = new CacheParallelLife(BOARD_SIZE, numThreads, cacheSize);
 		
 		InputStream input = Main.class
 				.getResourceAsStream("/gosperGliderGun.patt");

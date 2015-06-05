@@ -1,9 +1,9 @@
-/*
+/* ************************************************************************* *
  * Name:		ParallelLife.java
  * Description:	Interface for parallel Game of Life implementations.
  * Author:		Campbell Lockley		studentID: 1178618
  * Date:		04/06/15
- */
+ * ************************************************************************* */
 package org.campbelll.life;
 
 import java.util.concurrent.Callable;

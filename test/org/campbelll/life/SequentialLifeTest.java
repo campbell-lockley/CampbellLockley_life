@@ -1,9 +1,9 @@
-/*
+/* ************************************************************************* *
  * Name:		SequentialLifeTest.java
  * Description:	Test cases for SequentialLife.java
  * Author:		Campbell Lockley		StudentID: 1178618
  * Date:		03/06/15
- */
+ * ************************************************************************* */
 package org.campbelll.life;
 
 import static org.junit.Assert.*;

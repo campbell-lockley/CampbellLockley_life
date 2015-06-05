@@ -1,9 +1,9 @@
-/*
+/* ************************************************************************* *
  * Name:		Sequential.java
  * Description:	Sequential implementation of game of life.
  * Author:		Campbell Lockley		StudentID: 1178618
  * Date:		26/05/15
- */
+ * ************************************************************************* */
 package org.campbelll.life;
 
 /**

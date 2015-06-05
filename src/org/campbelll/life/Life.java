@@ -1,9 +1,9 @@
-/*
+/* ************************************************************************* *
  * Name:		Life.java
  * Description:	Interface for game of life implementations.
  * Author:		Campbell Lockley		StudentID: 1178618
  * Date:		26/05/15
- */
+ * ************************************************************************* */
 package org.campbelll.life;
 
 import java.io.BufferedReader;

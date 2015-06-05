@@ -1,11 +1,11 @@
-/*
- * Name:		BlocklParallelLife.java
+/* ************************************************************************* *
+ * Name:		BlockParallelLife.java
  * Description:	Parallel implementation of game of life which ages by splitting 
  * 				the board into blocks and submitting a job for each to a thread 
  * 				pool.
  * Author:		Campbell Lockley		StudentID: 1178618
  * Date:		04/06/15
- */
+ * ************************************************************************* */
 package org.campbelll.life;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class BlockParallelLife extends ParallelLife {
 	 * Constructor.
 	 * <p>
 	 * For BlockParallelLife the dimensions of the game of life board must be 
-	 * at least 32.
+	 * at least 32, and also be divisible by 32.
 	 * 
 	 * @param boardDim Size of board dimension.
 	 * @param numThreads Number of threads for the thread pool to use.
@@ -61,16 +61,16 @@ public class BlockParallelLife extends ParallelLife {
 	public BlockParallelLife(int boardDim, int numThreads) {
 		super(boardDim, numThreads);
 		
-		/* For BlocklParallelLife the board dimensions must be at least 32 */
+		/* Board dimensions must be at least 32 and divisible by 32 */
 		assert (boardDim >= numDivisions);
+		assert (boardDim % numDivisions == 0);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * <p>
 	 * This implementation of age() submits blocks of the board as jobs to a 
-	 * thread pool and waits for them to be processed. The thread pool queries 
-	 * the Java runtime and uses a 1:1 ratio of threads to CPU's.
+	 * thread pool and waits for them to be processed.
 	 * 
 	 * @throws TimeoutException if a blocking method call in age() times out, 
 	 * causing age() to fail.

@@ -1,9 +1,9 @@
-/*
+/* ************************************************************************* *
  * Name:		BlockParallelLifeTest.java
  * Description:	Test cases for BlockParallelLife.java
  * Author:		Campbell Lockley		StudentID: 1178618
  * Date:		04/06/15
- */
+ * ************************************************************************* */
 package org.campbelll.life;
 
 import static org.junit.Assert.*;

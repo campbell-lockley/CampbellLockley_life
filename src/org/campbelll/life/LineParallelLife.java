@@ -1,11 +1,11 @@
-/*
+/* ************************************************************************* *
  * Name:		LineParallelLife.java
  * Description:	Parallel implementation of game of life which ages by splitting 
  * 				the board into lines and submitting a job for each to a thread 
  * 				pool.
  * Author:		Campbell Lockley		StudentID: 1178618
  * Date:		03/06/15
- */
+ * ************************************************************************* */
 package org.campbelll.life;
 
 import java.util.ArrayList;
@@ -57,8 +57,7 @@ public class LineParallelLife extends ParallelLife {
 	 * {@inheritDoc}
 	 * <p>
 	 * This implementation of age() submits each line of the board as a job to 
-	 * a thread pool and waits for every line to be computed. The thread pool 
-	 * queries the Java runtime and uses a 1:1 ratio of threads to CPU's.
+	 * a thread pool and waits for every line to be computed.
 	 * 
 	 * @throws TimeoutException if a blocking method call in age() times out, 
 	 * causing age() to fail.
